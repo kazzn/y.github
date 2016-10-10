@@ -1,4 +1,7 @@
-<?php namespace App\Http\Controllers\Auth;
+<?php
+
+
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -18,7 +21,8 @@ class AuthController extends Controller {
 	|
 	*/
 
-	use AuthenticatesAndRegistersUsers;
+	
+use AuthenticatesAndRegistersUsers;
 
 	/**
 	 * Create a new authentication controller instance.

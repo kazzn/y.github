@@ -1,4 +1,7 @@
-<?php namespace App\Http\Middleware;
+<?php
+
+
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
@@ -11,12 +14,13 @@ class VerifyCsrfToken extends BaseVerifier {
     ];
 
     // handleを変更
-    public function handle($request, Closure $next){
-        if($this->excludedRoutes($request)){
-            return $this->addCookieToResponse($request, $next($request));
-        }
-        return parent::handle($request, $next);
-    }
+    public 
+function handle($request, Closure $next) {
+	if ($this->excludedRoutes ( $request )) {
+		return $this->addCookieToResponse ( $request, $next ( $request ) );
+	}
+	return parent::handle ( $request, $next );
+}
 
     /*
     * CSRFを除外したいURLであるかどうかをチェックする。

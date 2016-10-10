@@ -1,4 +1,7 @@
-<?php namespace App\Http\Controllers\Auth;
+<?php
+
+
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -18,7 +21,8 @@ class PasswordController extends Controller {
 	|
 	*/
 
-	use ResetsPasswords;
+	
+use ResetsPasswords;
 
 	/**
 	 * Create a new password controller instance.
