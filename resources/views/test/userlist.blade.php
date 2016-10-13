@@ -25,6 +25,27 @@ th {
 		ようこそ{{ $user->name }}さん <a href="/auth/logout">ログアウト</a>
 	</p>
 	<h1>ユーザ一覧</h1>
+
+	<form method="POST" action="/form/userlist">
+	<label for="user">ユーザ名：</label><input type="text" name="user">　
+	<label for="mail">メール：</label><input type="text" name="user">　
+	<label for="male"><input type="radio" name="sex" id="male" value="男性"> 男性</label>　
+	<label for="female"><input type="radio" name="sex" id="female" value="女性">女性</label>　
+	<?php
+	//出身地の選択肢
+	$prefs=['北海道','東北','北信越','関東','東海','近畿','中国','四国','九州'];
+	?>
+	<label for="pref">出身地：</label>
+	<select name="pref">
+		<option value="">選択してください</option>
+		@foreach($prefs as $pref)
+				<option value="{{ $pref }}">{{ $pref }}</option>
+		@endforeach
+	</select>
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	<input type="submit" name="search" value="検索">
+	</form>
+
 	<form method="POST" action="/form/userlist">
 		<input type="submit" name="delete" value="削除"> <a href="/form"
 			target="_blank">登録</a>
