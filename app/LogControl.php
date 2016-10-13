@@ -10,8 +10,10 @@ protected $_errTable=[
 
 function output ($logLevel, $errCode, $options = null)
 {
+    // エラーコード一覧からエラーメッセージを取得
     $errMes = $this->_errTable[$errCode];
     
+    // オプションをメッセージの後に()内に表示
     if (is_array($options)) {
         foreach ($options as $key => $val) {
             $option[] = $key . ':' . $val;
@@ -27,6 +29,7 @@ function output ($logLevel, $errCode, $options = null)
     
     $errMes .= "(" . $opt . ")";
     
+    // ログレベルによって分岐
     switch ($logLevel) {
         case 'info':
             Log::info($errMes);
