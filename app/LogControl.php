@@ -62,9 +62,10 @@ function expand ($arry)
 {
     if (is_array($arry)) {
         foreach ($arry as $key => $values) {
-            if (is_array($values)) {
-                expand($values);
-            } else {
+            while (is_array($values)) {
+                $value=expand($values);
+            }
+            if(!is_array($values)){
                 $value[] = $key . ':' . $values;
             }
         }

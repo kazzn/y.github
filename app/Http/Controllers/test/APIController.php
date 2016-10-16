@@ -11,16 +11,32 @@ use App\Http\Controllers\Auth\AuthController;
 
 class APIController extends Controller {
 	// ユーザ一覧のAPI
-	function getList() {
+	function getList($id=null) {
 		// $data=DB::select('select * from form');
-		$data = Form::all ();
-		return response ()->json ( $data ); // 処理の結果をJSON形式で返す
+		if(is_null($id)){
+		    $data = Form::all ();
+		} else {
+		    $data= Form::whereId($id)->get();
+		}
+		if(count($data)>0){
+		    $response=response ()->json ( array(
+		            'status'=>'OK',
+		            'data'=> $data,
+		    ));
+		} else {
+		    $response= response()->json(array(
+		            'status'=>'NG',
+		            'message'=>'データが存在しません。',
+		    ));
+		}
+
+		return $response;
 	}
-	
+
 	// ユーザ登録のAPI
 	function addList(Request $request) {
 		$form = new Form ();
-		
+
 		// データの取得
 		$data = $request->all ();
 		$form->user = $data ['user'];
@@ -35,7 +51,7 @@ class APIController extends Controller {
 				'pref' => 'required',
 		];
 		$validator = Validator::make ( $data, $rules );
-		
+
 		if (! $validator->fails ()) {
 			// バリデーションOK
 			// データ新規登録時の処理(status=add)
@@ -44,14 +60,14 @@ class APIController extends Controller {
 			$data = Form::whereId ( $last_id )->get ();
 			$response = response ()->json ( array (
 					'status' => 'OK',
-					'data' => $data [0] 
+					'data' => $data [0]
 			), 201 );
 		} else {
 			// バリデーションがNGならエラーメッセージを返す
 			$message = $validator->messages ();
 			$response = response ()->json ( array (
 					'status' => 'ERROR',
-					'message' => $message 
+					'message' => $message
 			), 409 );
 		}
 		return $response;
@@ -68,7 +84,7 @@ class APIController extends Controller {
 		if (! isset ( $data ['sex'] )) {
 			$data ['sex'] = '';
 		}
-		
+
 		// セッションに保存
 		$request->session ()->put ( $data );
 
@@ -79,27 +95,27 @@ class APIController extends Controller {
 				'pref' => 'required',
 		];
 		$this->validate ( $request, $rules );
-		
+
 		return view ( 'test.apiconfirm', compact ( "data" ) );
 	}
 	function complete(Request $request) {
 		// セッションの値を取得
 		$data = $request->session ()->all ();
-		
+
 		// 確認画面で「戻る」ボタン押下したときの処理
 		if ($request->has ( 'back' )) {
 			// 入力時の値を入力フォームに引き継ぐ
 			// 入力フォームでは、oldで値を取得する
 			return redirect ( 'api/add' )->withInput ( $data );
 		}
-		
+
 		// データをPOSTで登録API(addList)に送信
 		$url = 'http://localhost/api/addlist';
 		$data = array (
 				'user' => $data ['user'],
 				'mail' => $data ['mail'],
 				'sex' => $data ['sex'],
-				'pref' => $data ['pref'] 
+				'pref' => $data ['pref']
 		);
 		$data = http_build_query ( $data, "", "&" );
 		$options = array (
@@ -107,8 +123,8 @@ class APIController extends Controller {
 						'ignore_errors' => true,
 						'method' => 'POST',
 						'header' => "Content-type:application/x-www-form-urlencoded\r\nUser-Agent:MyAgent/1.0\r\nContent-Length:" . strlen ( $data ) . "\r\n",
-						'content' => $data 
-				) 
+						'content' => $data
+				)
 		);
 		$options = stream_context_create ( $options );
 		$data = file_get_contents ( $url, false, $options ); // 送信結果をJSON形式で取得

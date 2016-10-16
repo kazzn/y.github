@@ -11,13 +11,10 @@ class FormController extends Controller
 
     function index (Request $request)
     {
-        $log = new LogControl();
-	    $log->output('debug','E10001',['service'=>'0001','RID'=>'3000']);
-	    $log->output('debug','E10001',['service'=>'0001']);
-        $log->output('debug', 'E10001');
+        // $log->output('debug', 'E10001');
         return view('test.index');
     }
-    
+
     // ユーザ登録確認画面
     function confirm (Request $request)
     {
@@ -26,7 +23,7 @@ class FormController extends Controller
         if (! isset($data['sex'])) {
             $data['sex'] = '';
         }
-        
+
         // セッションに保存
         $request->session()->put($data);
 
@@ -37,23 +34,23 @@ class FormController extends Controller
 				'pref' => 'required',
 		];
         $this->validate($request, $rules);
-        
+
         return view('test.confirm', compact("data"));
     }
-    
+
     // ユーザ登録完了
     function complete (Request $request)
     {
         // セッションの値を取得
         $data = $request->session()->all();
-        
+
         // 確認画面で「戻る」ボタン押下したときの処理
         if ($request->has('back')) {
             // 入力時の値を入力フォームに引き継ぐ
             // 入力フォームでは、oldで値を取得する
             return redirect('form')->withInput($data);
         }
-        
+
         // データ編集時の処理(status=edit)
         if ($request->input('status') === 'edit') {
 			$data= ['id'=>$data['id'],
@@ -63,7 +60,7 @@ class FormController extends Controller
 					'pref'=>$data['pref'],
 			];
             DB::update(
-                    'update form set user=:user, mail=:mail, sex=:sex, pref=:pref where id=:id', 
+                    'update form set user=:user, mail=:mail, sex=:sex, pref=:pref where id=:id',
                     $data);
             return '編集しました。';
         }
@@ -77,23 +74,23 @@ class FormController extends Controller
 		]);
         return view('test.complete');
     }
-    
+
     // ユーザ一覧($itemと$orderで並び替え)
     function userlist ($item = 'id', $order = 'asc')
     {
 
 		$items=['id','user','mail','sex','pref'];
 		$orders=['asc','desc'];
-        
+
         if (in_array($item, $items) && in_array($order, $orders)) {
             $data = DB::table('form')->orderBy($item, $order)->paginate(5); // ページネート処理(5件ごと)
             return view('test.userlist', compact("data"));
         }
-        
+
         $data = DB::table('form')->orderBy('id', 'asc')->paginate(5); // ページネート処理(5件ごと)
         return view('test.userlist', compact("data"));
     }
-    
+
     // ユーザ詳細
     function user ($id)
     {
@@ -105,7 +102,7 @@ class FormController extends Controller
         }
         return view('test.user', compact('data'));
     }
-    
+
     // ユーザ編集
     function edit ($id)
     {
@@ -117,7 +114,7 @@ class FormController extends Controller
         }
         return view('test.edit', compact('data'));
     }
-    
+
     // ユーザ削除
     function delete (Request $request)
     {
@@ -125,14 +122,14 @@ class FormController extends Controller
         // $data= [ 'sex'=>$data['sex'],
         // 'pref'=>$data['pref'],
         // ];
-        
+
         // 「検索」ボタン押下したときの処理
         // if ($request->has('search')) {
         // $data = DB::select('select * from form where sex=:sex order by id',
         // $data);
         // return view('test.userlist', compact("data"));
         // }
-        
+
         if ($request->has('delete')) {
             // 削除にチェックが入っていたときだけ処理をする
             foreach ($data as $d) {
@@ -141,6 +138,44 @@ class FormController extends Controller
             return redirect('/form/userlist');
         }
     }
+
+    // フォームの追加
+    function add ()
+    {
+        return view('test.add');
+    }
+
+    function addconfirm(Request $request)
+    {
+        $data=$request->all();
+        $request->session()->put($data);
+
+        return view('test.addconfirm',compact("data"));
+
+    }
+
+    function addcomplete(Request $request)
+    {
+        //cntの値をセッションに保存
+        $request->session()->put('cnt',$request->input('cnt'));
+        //セッションの値をすべて取得
+        $data=$request->session()->all();
+
+        if($request->has('back')){
+            return redirect('form/add')->withInput($data);
+        }
+    }
+
+    //ajax検索①
+    function search(){
+        return view('test.search');
+    }
+
+    //ajax検索②＃郵便番号
+    function zipsearch(){
+        return view('test.zipsearch');
+    }
+
 }
 
 
