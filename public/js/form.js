@@ -70,6 +70,8 @@ $(function(){
 		zipcode=$('#zipcode').val();
 		//結果表示の初期化
 		$('#zipresult').empty();
+		//Loadingイメージ表示
+		dispLoading();
 
 		$.ajax({
 			//GET,POST,PUT,DELETEなど
@@ -96,17 +98,29 @@ $(function(){
 				result='データの取得に失敗しました。';
 			}
 			$('#zipresult').append(result);
-		}).faile(function(jqXHR,textStatus,errorThrown){
+		}).fail(function(jqXHR,textStatus,errorThrown){
 			//失敗時処理
 			$('#zipresult').append('通信中にエラーが発生しました。');
 		}).always(function(jqXHR,textStatus){
 			//共通処理
+			// Loadingイメージを削除
+	        removeLoading();
 		});
+
 	});
 
+	// Loadingイメージ表示関数
+	function dispLoading(msg){
+	    // ローディング画像が表示されていない場合のみ表示
+	    if($("#loading").size() == 0){
+	        $("#zipresult").append("<div id='loading'></div>");
+	    }
+	}
 
-
-
+	// Loadingイメージ削除関数
+	function removeLoading(){
+		$("#loading").remove();
+	}
 
 });
 
