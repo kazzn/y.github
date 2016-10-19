@@ -36,5 +36,43 @@
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<input type="submit" value="送信">
 	</form>
+
+	<div id="tbl">
+	<table border="1" id="tbl1">
+	<tr>
+	<th>項目1</th>
+	<td id="data11"></td>
+	</tr>
+	<tr>
+	<th>項目2</th>
+	<td id="data12"><input type="text" name="item1"> <input type="button" name="search_btn1" id="search_btn1" value="検索"></td>
+	</tr>
+	<tr>
+	<th>項目3</th>
+	<td id="data13"></td>
+	</tr>
+	</table>
+	</div>
+	<input type="button" value="追加する" id="addtbl">
+
+
+	<div id="tblbox">
+	<table border="1">
+	<tr>
+	<th>項目1</th>
+	<th>項目2</th>
+	<th>項目3</th>
+	<th>項目4</th>
+	</tr>
+	<tr id="tr1">
+	<td><input type="text" name="item11" id="item11"> <input type="button" name="search_btn1" id="sbtn1" value="検索"></td>
+	<td><input type="text" name="item12" id="item12"></td>
+	<td><input type="text" name="item13" id="item13"></td>
+	<td><input type="text" name="item14" id="item14"></td>
+	</tr>
+	</table>
+	</div>
+	<input type="button" value="追加する" id="addt">
+
 </body>
 </html>

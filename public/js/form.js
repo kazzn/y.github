@@ -15,6 +15,60 @@ $(function(){
 		}
 	);
 
+	//フォーム追加②
+	$('#addtbl').click(
+		function(){
+			var body=$('#tbl table:last-child').html();
+			var n= $('#tbl table:last-child').attr('id');
+			n=n.substr(3,n.length-3)-0+1;
+			//テーブルの追加
+			$('<table border="1" id="tbl'+n+'"></table>').append(body).appendTo('#tbl');
+			//属性の変更
+			$('#tbl'+n+' tr:nth-child(1) td').attr('id','data'+n+1);
+			$('#tbl'+n+' tr:nth-child(2) td').attr('id','data'+n+2);
+			$('#tbl'+n+' tr:nth-child(2) input[type="text"]').attr('name','item'+n);
+			$('#tbl'+n+' tr:nth-child(2) input[type="button"]').attr('id','search_btn'+n);
+			$('#tbl'+n+' tr:nth-child(2) input[type="button"]').attr('name','search_btn'+n);
+			$('#tbl'+n+' tr:nth-child(3) td').attr('id','data'+n+3);
+		}
+	);
+
+	//フォーム追加③
+	$('#addt').click(
+			function(){
+				var body=$('#tblbox table:last-child tr:last-child').html();
+				n= $('#tblbox table:last-child tr:last-child').attr('id');
+				n=n.substr(2,n.length-2)-0+1;
+				//テーブルの追加
+				$('<tr id="tr'+n+'"></tr>').append(body).appendTo('#tblbox table');
+				//属性の変更
+				$('#tr'+n+' td:nth-child(1) input[type="text"]').attr('id','item'+n+1);
+				$('#tr'+n+' td:nth-child(1) input[type="text"]').attr('name','item'+n+1);
+				$('#tr'+n+' td:nth-child(1) input[type="button"]').attr('id','sbtn'+n);
+				$('#tr'+n+' td:nth-child(1) input[type="button"]').attr('name','sbtn'+n);
+				$('#tr'+n+' td:nth-child(2) input[type="text"]').attr('id','item'+n+2);
+				$('#tr'+n+' td:nth-child(2) input[type="text"]').attr('name','item'+n+2);
+				$('#tr'+n+' td:nth-child(3) input[type="text"]').attr('id','item'+n+3);
+				$('#tr'+n+' td:nth-child(3) input[type="text"]').attr('name','item'+n+3);
+				$('#tr'+n+' td:nth-child(4) input[type="text"]').attr('id','item'+n+4);
+				$('#tr'+n+' td:nth-child(4) input[type="text"]').attr('name','item'+n+4);
+			}
+		);
+
+	function ev(i){
+	   $(document).on(
+			"click",
+			"#sbtn"+i,
+			function(){
+				$('#tr'+i+' #item'+i+'2').val('企業名'+i);
+				}
+			);
+	   }
+
+	for(i=1;i<=100;i++){
+		ev(i);
+	}
+
 	//ajax検索①
 	$('#search').click(
 		function() {
