@@ -6,33 +6,47 @@
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapi.com/ajax/libs/jqueryui/1.10.4/i18n/jquery-ui-i18n.min.js"></script>
 <script type="text/javascript" src="/js/form.js"></script>
+<style type="text/css">
+<!--
+
+.error {
+    background-color:#ffc1f9;
+    }
+
+ --></style>
+
+
 </head>
 <body>
+
 	<h1>入力フォームの追加(入力)</h1>
-	<form aciton="/form/add" method="POST">
+
+	<ul>{{ $errors->first('total_val') }}</ul>
+	<form action="/form/add" method="POST">
 		<table id="formtbl">
 		<tr id="item1">
 		<td>項目1：</td>
-		<td><input type="text" name="hoge1" id="hoge1" value="{{ old('hoge1') }}"></td>
+		<td><input type="text" name="hoge1" id="hoge1" value="{{ old('hoge1') }}" class={{ $errors->has('hoge1') ? 'error' : '' }}>{{ $errors->first('hoge1') }}</td>
 		</tr>
 		<?php
 
-		$cnt=old('cnt');
+		$cnt=old('hogecnt');
         if($cnt>=2){
             for($i=2;$i<=$cnt;$i++){
                 eval("\$val=old('hoge$i');"); //ポイント！
+                eval("\$class=\$errors->has('hoge$i')?'error':'';"); //ポイント！
 		?>
 		<tr id="item<?= $i ?>">
 		<td>項目<?= $i ?>：</td>
-		<td><input type="text" name="hoge<?= $i ?>" id="hoge<?= $i ?>" value="{{ $val }}"></td>
+		<td><input type="text" name="hoge<?= $i ?>" id="hoge<?= $i ?>" value="{{ $val }}" class="{{ $class }}"></td>
 		</tr>
 		<?php
             }
         }
 		?>
 		</table>
-
-		<input type="button" value="追加" id="add">
+		<input type="text" id="total_val" name="total_val" value="{{ old('total_val') }}">
+		<input type="button" value="追加" id="add"><input type="text" id="hogecnt" name="hogecnt" value="{{ $cnt }}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<input type="submit" value="送信">
 	</form>

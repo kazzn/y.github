@@ -2,9 +2,11 @@
 namespace App\Http\Controllers\test;
 use DB;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreBlogPostRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Auth\AuthController;
 use \App\LogControl;
+use App\CustomValidator;
 
 class FormController extends Controller
 {
@@ -148,7 +150,31 @@ class FormController extends Controller
     function addconfirm(Request $request)
     {
         $data=$request->all();
+        //$data['hoge1']=$data['hoge1']-0;
+        //return gettype($data['hoge1']);
         $request->session()->put($data);
+        //hogecntの値をセッションに保存
+        //$request->session()->put('hogecnt',$request->input('hogecnt'));
+
+        //バリデーションチェック
+        $rules = [
+                'hoge1' => 'required|rangeNumber:0,100|decimal:2',
+                'total_val'=>'rangeNumber:100,100'
+        ];
+        for($i=2;$i<=$request->input('hogecnt');$i++){
+            $rules['hoge'.$i]='required|rangeNumber:0,100|decimal:2';
+        }
+
+        //エラー表示カスタマイズ
+        $messages = [
+                'hoge1.required'=>'ほげ1を入力してください。',
+                'hoge1.range_number'=>'ほげ1には0～100の小数点第2位以下の数値を入力してください。',
+                'hoge1.decimal'=>'ほげ1には0～100の小数点第2位以下の数値を入力してください。',
+                'total_val.range_number'=>'合計値が100になるように入力してください。'
+        ];
+
+        $this->validate($request, $rules, $messages);
+
 
         return view('test.addconfirm',compact("data"));
 
@@ -175,6 +201,8 @@ class FormController extends Controller
     function zipsearch(){
         return view('test.zipsearch');
     }
+
+
 
 }
 

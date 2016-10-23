@@ -12,8 +12,34 @@ $(function(){
 			$('#item'+n+' td:first-child').text('項目'+n+'：');
 			//属性を変更、値を初期化
 			$('#item'+n+' input').attr('name','hoge'+n).attr('id','hoge'+n).val('');
+			//フォームの数をカウント
+			$('#hogecnt').val(n);
 		}
 	);
+
+	function calc_val(i){
+		$(document).on(
+				"change",
+				"#hoge"+i,
+				function(){
+					n=$('#hogecnt').val();
+					if(n===null||n===''){
+						n=1;
+					}
+					total_val=0;
+					for(i=1;i<=n;i++){
+						total_val+=$('#hoge'+i).val()-0;
+					}
+					$('#total_val').val(total_val);
+				}
+		);
+	}
+
+	for(i=1;i<=100;i++){
+		calc_val(i);
+	}
+
+
 
 	//フォーム追加②
 	$('#addtbl').click(

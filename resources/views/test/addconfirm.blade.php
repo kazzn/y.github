@@ -15,7 +15,7 @@
 		<?php
 
 		foreach($data as $key => $val){
-		    if(mb_strpos($key,'hoge')===0 && !empty($val)){
+		    if(mb_strpos($key,'hoge')===0 && $val!==''){
 		        //$keyにhogeを含み、$valに値がセットされている場合
 		        $i=mb_substr($key,4,mb_strlen($key)-4);
 		?>
