@@ -63,6 +63,11 @@ Route::post('api/add', 'test\APIController@confirm');
 Route::post('api/complete', 'test\APIController@complete');
 Route::post('api/addlist', 'test\APIController@addList');
 
+//ファイルアップロード
+Route::get('form/upfile','test\FormController@upfile');
+Route::post('form/upload','test\FormController@upload');
+Route::post('form/delfile','test\FormController@delfile');
+
 
 
 

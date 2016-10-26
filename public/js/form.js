@@ -202,6 +202,85 @@ $(function(){
 		$("#loading").remove();
 	}
 
+	//ファイルのアップロード
+	$('#files').on("change",function(){
+		// ファイル情報を取得
+        var files = this.files;
+        // FormDataオブジェクトを用意
+        var fd = new FormData();
+        // ファイルの個数を取得
+        var filesLength = files.length;
+        // ファイル情報を追加
+        for (var i = 0; i < filesLength; i++) {
+            fd.append("files[]", files[i]);
+        }
+
+		$.ajax({
+			//GET,POST,PUT,DELETEなど
+			type: 'POST',
+			url: '/form/upload',
+            data: fd,
+            dataType:'json',
+            processData: false,
+            contentType: false,
+            //laravelトークン対策
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+		}).done(function(data,textStatus,jqXHR){
+			for(i=0;i<data.length;i++){
+				$('#file_list').append('<p id="file'+i+'"><span>'+data[i]+'</span><input type="text" name="attchmnt[]" value="'+data[i]+'"> <input type="button" value="削除"></p>');
+			}
+			alert('ファイルをアップロードしました。');
+		}).fail(function(jqXHR,textStatus,errorThrown){
+			//失敗時処理
+			alert('ファイルのアップロードに失敗しました。');
+		}).always(function(jqXHR,textStatus){
+			//共通処理
+		});
+	});
+
+	//ファイルの削除
+	function delfile(i){
+	$(document).on(
+		"click",
+		"#file"+i,
+		function(){
+			var filename=$('#file'+i+' span').text();
+			$.ajax({
+				type:"POST",
+				url:"/form/delfile",
+				data:{
+					'delfile':filename
+				},
+				//laravelトークン対策
+	            headers: {
+	                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	            }
+			}).done(function(data,textStatus,jqXHR){
+				$('#file'+i).remove();
+				alert('ファイルを削除しました。');
+			}).fail(function(jqXHR,textStatus,errorThrown){
+				//失敗時処理
+				alert('ファイルの削除に失敗しました。');
+			}).always(function(jqXHR,textStatus){
+				//共通処理
+			});
+
+		}
+	);
+	}
+
+	for(i=0;i<=100;i++){
+		delfile(i);
+	}
+
+
+
+
+
+
+
 });
 
 

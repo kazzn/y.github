@@ -202,6 +202,37 @@ class FormController extends Controller
         return view('test.zipsearch');
     }
 
+    //ファイルアップロード
+    //フォーム
+    function upfile(){
+        return view('test.upfile');
+    }
+
+    protected $_filename;
+    //アップロード処理
+    function upload(Request $request){
+        $files = $request->file('files');
+        for($i=0;$i<count($files);$i++){
+            $this->_filename[$i]='doc_'.date('YmdHis').'_'.$i.'.'.$files[$i]->getClientOriginalExtension();
+            $move=$files[$i]->move(dirname(getenv('DOCUMENT_ROOT')).'/storage/doc/',$this->_filename[$i]);
+            //session()->put('filename',$this->_filename);
+        }
+        header('Content-type: text/html');
+        echo json_encode($this->_filename);
+    }
+
+    function delfile(Request $request){
+        $delfile= $request->input('delfile');
+        $filepath=dirname(getenv('DOCUMENT_ROOT')).'/storage/doc/'.$delfile;
+        if(\File::exists($filepath)){
+            if(unlink($filepath)){
+                echo 1;exit; // 削除成功
+            }else{
+                exit; // 削除失敗
+            }
+        }
+    }
+
 
 
 }
