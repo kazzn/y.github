@@ -159,7 +159,7 @@ class FormController extends Controller
         //バリデーションチェック
         $rules = [
                 'hoge1' => 'required|rangeNumber:0,100|decimal:2',
-                'total_val'=>'rangeNumber:100,100'
+               // 'total_val'=>'rangeNumber:100,100'
         ];
         for($i=2;$i<=$request->input('hogecnt');$i++){
             $rules['hoge'.$i]='required|rangeNumber:0,100|decimal:2';
@@ -175,9 +175,12 @@ class FormController extends Controller
 
         $this->validate($request, $rules, $messages);
 
-
+        //上のバリデーションを通過後…
+        $errmes=$this->check_param($request);
+        if(!empty($errmes)){ //エラーがあった場合の処理
+            return back()->withInput()->withErrors($errmes);
+        }
         return view('test.addconfirm',compact("data"));
-
     }
 
     function addcomplete(Request $request)
@@ -190,6 +193,22 @@ class FormController extends Controller
         if($request->has('back')){
             return redirect('form/add')->withInput($data);
         }
+    }
+
+    function check_param(Request $request){
+        //合計値が100かどうかのチェックとエラーメッセージの作成
+        $errmes=[];
+        $data= $request->except('hogecnt');
+        $total_share=0;
+        foreach($data as $key=> $value){
+            if(mb_strpos($key,'hoge')===0){
+                $total_share+=$value;
+            }
+        }
+        if($total_share!=100){
+            $errmes['total_share']='合計値が100になるように入力してください。';
+        }
+        return $errmes;
     }
 
     //ajax検索①
@@ -231,6 +250,23 @@ class FormController extends Controller
                 exit; // 削除失敗
             }
         }
+    }
+
+    function select(){
+        return view('test.select');
+    }
+
+    function selectconfirm(Request $request){
+        $data= $request->all();
+        $request->session()->put($data);
+        return redirect('form/select');
+    }
+
+    //セッションに保存された値をJSON形式で返す
+    function selectjson(){
+        $id= session()->get('pulldown');
+        echo json_encode(compact("id"));
+        return;
     }
 
 

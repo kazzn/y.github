@@ -22,6 +22,7 @@
 	<h1>入力フォームの追加(入力)</h1>
 
 	<ul>{{ $errors->first('total_val') }}</ul>
+	<p>{{ $errors->first('total_share') }}</p>
 	<form action="/form/add" method="POST">
 		<table id="formtbl">
 		<tr id="item1">

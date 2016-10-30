@@ -275,7 +275,25 @@ $(function(){
 		delfile(i);
 	}
 
+	//JSON形式の値を取得してプルダウンにセットする
+	function setSelectItem(){
 
+		$.ajax({
+			type:"GET",
+			url:"/form/selectjson",
+			dataType: "json"
+		}).done(function(data,textStatus,jqXHR){
+			$('#pulldown').val(data["id"]);
+		}).fail(function(jqXHR,textStatus,errorThrown){
+			//失敗時処理
+			alert('NG');
+		}).always(function(jqXHR,textStatus){
+			//共通処理
+		});
+
+	}
+
+	setSelectItem();
 
 
 

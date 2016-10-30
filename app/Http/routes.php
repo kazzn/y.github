@@ -51,6 +51,10 @@ Route::post('form/add/complete', 'test\FormController@addcomplete');
 //APIajax検索
 Route::get('form/search', 'test\FormController@search');
 Route::get('form/zipsearch','test\FormController@zipsearch');
+//プルダウンリスト
+Route::get('form/select','test\FormController@select');
+Route::post('form/select','test\FormController@selectconfirm');
+Route::get('form/selectjson','test\FormController@selectjson');
 
 
 /*
