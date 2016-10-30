@@ -262,6 +262,13 @@ class FormController extends Controller
         return redirect('form/select');
     }
 
+    /*function selectconfirm(Request $request){
+        $data= $request->all();
+        $request['pulldown']='abc';
+        $b=$request->input('pulldown');
+        return 'b='.$b;
+    }*/
+
     //セッションに保存された値をJSON形式で返す
     function selectjson(){
         $id= session()->get('pulldown');
