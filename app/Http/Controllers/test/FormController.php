@@ -269,6 +269,18 @@ class FormController extends Controller
         return;
     }
 
+    function selectdata(){
+        $ret= array(
+                '0001'=>'オプション1',
+                '0002'=>'オプション2',
+                '0003'=>'オプション3'
+        );
+
+        $ret= json_encode($ret);
+        return $ret;
+
+    }
+
 
 
 }

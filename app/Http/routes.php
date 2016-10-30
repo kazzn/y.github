@@ -55,7 +55,7 @@ Route::get('form/zipsearch','test\FormController@zipsearch');
 Route::get('form/select','test\FormController@select');
 Route::post('form/select','test\FormController@selectconfirm');
 Route::get('form/selectjson','test\FormController@selectjson');
-
+Route::get('form/selectdata','test\FormController@selectdata');
 
 /*
  * API活用

@@ -275,6 +275,37 @@ $(function(){
 		delfile(i);
 	}
 
+
+
+	function setOption(sIdx){
+		$.ajax({
+			type:"GET",
+			url:"/form/selectdata",
+			dataType: "json"
+		}).done(function(data,textStatus,jqXHR){
+			$('#pulldown :not(:first-child)').remove();
+			for(val in data){
+				if(val==sIdx){
+					s='selected';
+				} else {
+					s='';
+				}
+				option='<option value="'+val+'" '+s+'>'+data[val]+'</option>';
+				$('#pulldown').append(option);
+			}
+		}).fail(function(jqXHR,textStatus,errorThrown){
+			//失敗時処理
+			alert('NG');
+		}).always(function(jqXHR,textStatus){
+			//共通処理
+		});
+	}
+
+	//検索ボタンクリック時にプルダウン選択のオプション値がセットされる
+	$('#search').click(function(){
+			setOption();
+	});
+
 	//JSON形式の値を取得してプルダウンにセットする
 	function setSelectItem(){
 
@@ -283,7 +314,8 @@ $(function(){
 			url:"/form/selectjson",
 			dataType: "json"
 		}).done(function(data,textStatus,jqXHR){
-			$('#pulldown').val(data["id"]);
+			setOption(data['id']);
+			//$('#pulldown').val('0001');
 		}).fail(function(jqXHR,textStatus,errorThrown){
 			//失敗時処理
 			alert('NG');
