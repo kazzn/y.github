@@ -264,9 +264,9 @@ class FormController extends Controller
 
     /*function selectconfirm(Request $request){
         $data= $request->all();
-        $request['pulldown']='abc';
-        $b=$request->input('pulldown');
-        return 'b='.$b;
+        $request['abc']='abcdefg';
+        $b=$request->input('abc');
+        return 'abc='.$b;
     }*/
 
     //セッションに保存された値をJSON形式で返す
@@ -288,6 +288,18 @@ class FormController extends Controller
 
     }
 
+    function parentwin(){
+        return view('test.parentwin');
+    }
+
+    function childwin(){
+        return view('test.childwin');
+    }
+
+
+    function tablesort(){
+        return view('test.tablesort');
+    }
 
 
 }

@@ -229,8 +229,10 @@ $(function(){
             }
 		}).done(function(data,textStatus,jqXHR){
 			for(i=0;i<data.length;i++){
-				$('#file_list').append('<p id="file'+i+'"><span>'+data[i]+'</span><input type="text" name="attchmnt[]" value="'+data[i]+'"> <input type="button" value="削除"></p>');
+				$('#file_list').append('<p id="file'+i+'"><span>'+data[i]+'</span><input type="hidden" name="attchmnt[]" value="'+data[i]+'"> <input type="button" value="削除"></p>');
+				delfile(i);
 			}
+			$('#files').remove();
 			alert('ファイルをアップロードしました。');
 		}).fail(function(jqXHR,textStatus,errorThrown){
 			//失敗時処理
@@ -259,6 +261,9 @@ $(function(){
 	            }
 			}).done(function(data,textStatus,jqXHR){
 				$('#file'+i).remove();
+				if(!$('#file_list p').length){
+					$('form').append('<input type="file" name="files" id="files" multiple="multiple">');
+				}
 				alert('ファイルを削除しました。');
 			}).fail(function(jqXHR,textStatus,errorThrown){
 				//失敗時処理
@@ -271,9 +276,9 @@ $(function(){
 	);
 	}
 
-	for(i=0;i<=100;i++){
-		delfile(i);
-	}
+	//for(i=0;i<=100;i++){
+	//	delfile(i);
+	//}
 
 
 
@@ -328,6 +333,19 @@ $(function(){
 	setSelectItem();
 
 
+	//テーブルソート
+	$('#prefTable').tablesorter({
+			// 1行間隔で行の背景色を変更する
+			// tr要素のクラスにevenとodd が交互に付与される
+			widgets:['zebra'],
+			// ソート初期条件[(列番号 一番左の列が0),(昇順:0 降順:1)]で指定
+			sortList:[[0,1]],
+			// 指定列のソート無効化
+			// 列番号で列を指定して、sorter:falseで無効化
+			headers:{
+				3:{sorter:false}
+			}
+	});
 
 
 

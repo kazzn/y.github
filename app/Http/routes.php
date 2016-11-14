@@ -72,6 +72,16 @@ Route::get('form/upfile','test\FormController@upfile');
 Route::post('form/upload','test\FormController@upload');
 Route::post('form/delfile','test\FormController@delfile');
 
+//例外テスト
+Route::get('exc/example','test\ExceptionController@example001');
+
+//親子ウィンドウ操作
+Route::get('parentwin', 'test\FormController@parentwin');
+Route::get('childwin', 'test\FormController@childwin');
+
+//テーブルソート
+Route::get('tablesort', 'test\FormController@tablesort');
+
 
 
 
